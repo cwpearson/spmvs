@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
 
     const int niters = 500;
     KokkosKernels::Experimental::Controls controls;
-    controls.setParameter("algorithm", "experimental_bsr_tc");
+    controls.setParameter("algorithm", "native");
     Kokkos::fence();
     auto start = Clock::now();
     for (int i = 0; i < niters; ++i) {

@@ -14,9 +14,9 @@ int main(int argc, char **argv) {
     }
 
     typedef int Ordinal;
-    typedef double AScalar;
-    typedef double XScalar;
-    typedef double YScalar;
+    typedef Kokkos::Experimental::half_t AScalar;
+    typedef Kokkos::Experimental::half_t XScalar;
+    typedef Kokkos::Experimental::half_t YScalar;
     typedef Kokkos::Cuda Device;
 
     typedef KokkosSparse::Experimental::BsrMatrix<AScalar, Ordinal, Device> MatrixType;
@@ -39,7 +39,6 @@ int main(int argc, char **argv) {
 
     const int niters = 500;
     KokkosKernels::Experimental::Controls controls;
-    controls.setParameter("algorithm", "experimental_bsr_tc");
     Kokkos::fence();
     auto start = Clock::now();
     for (int i = 0; i < niters; ++i) {

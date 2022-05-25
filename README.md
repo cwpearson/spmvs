@@ -8,11 +8,12 @@ Not all comparisons are possible, because:
 * BSR cuSparse only supports `int` offsets and ordinals.
 * BSR cuSparse only supports `LayoutLeft` for multivector X and Y
 * BSR cuSparse does not support half precision
+* Kokkos kernels does not have a cuSparse TPL for CrsMatrix multivector
 
 
 | Matrix    | Arithmatic   | Impl.        | Binary |
 |-|-|-|-|
-| CrsMatrix | fp64 += fp64 | cuSparse     | `kk-crs-spmv-cusparse-fp64-fp64` |
+| CrsMatrix | fp64 += fp64 | cuSparse     | **N/A** |
 | ...       | ...          | native       | `kk-crs-spmv-native-fp64-fp64`   |
 | ...       | ...          | tensor cores | **N/A**                          | 
 | ...       | fp16 += fp16 | cuSparse     | **N/A**                          |
@@ -24,7 +25,7 @@ Not all comparisons are possible, because:
 | ...       | fp16 += fp16 | cuSparse     | **N/A**                          |
 | ...       | ...          | native       | `kk-bsr-spmv-native-fp16-fp16`   |
 | ...       |              | tensor cores | `kk-bsr-spmv-tc-fp16-fp16`       |
-| Hybrid    | fp64 += fp64 | tensor cores (blocks) + cuSparse (remainder) | `kk-hybrid-spmv-tc-cusparse-fp64-fp64`|
+| Hybrid    | fp64 += fp64 | tensor cores (blocks) + cuSparse (remainder) | **N/A**|
 | ...       | ...          | tensor cores (blocks) + native (remainder)   | `kk-hybrid-spmv-tc-native-fp64-fp64`  |
 | ...       | fp16 += fp16 | tensor cores (blocks) + cuSparse (remainder) | **N/A**                               |
 | ...       | ...          | tensor cores (blocks) + native (remainder)   | `kk-hybrid-spmv-tc-native-fp16-fp16`  |

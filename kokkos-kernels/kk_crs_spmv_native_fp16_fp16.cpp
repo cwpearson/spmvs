@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
   {
 
     if (argc < 2) {
-      std::cerr << "wrong CLI\n";
+      std::cerr << "usage: <exe> matrix\n";
       return 1;
     }
 
@@ -52,7 +52,8 @@ int main(int argc, char **argv) {
     Kokkos::fence();
     Duration elapsed = Clock::now() - start;
 
-    std::cout << elapsed.count() / niters << "\n";
+    std::cout << elapsed.count() / niters;
+    std::cout << std::flush;
   }
   Kokkos::finalize();
   return 0;

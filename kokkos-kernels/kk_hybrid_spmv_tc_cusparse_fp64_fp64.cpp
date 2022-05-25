@@ -88,12 +88,13 @@ int main(int argc, char **argv) {
     Kokkos::fence();
     Duration elapsed = Clock::now() - start;
 
-    std::cout << elapsed.count() / niters;
-    std::cout << "," << a.nnz();
-    std::cout << "," << split.denseNnz;
-    std::cout << "," << dense.nnz() * dense.blockDim() * dense.blockDim();
-    std::cout << "," << a.nnz() - split.denseNnz;
-    std::cout << "\n";
+    // clang-format off
+    std::cout << elapsed.count() / niters 
+    << "," << a.nnz() 
+    << "," << split.denseNnz 
+    << "," << dense.nnz() * dense.blockDim() * dense.blockDim() 
+    << "," << a.nnz() - split.denseNnz;
+    // clang-format on
   }
   Kokkos::finalize();
   return 0;

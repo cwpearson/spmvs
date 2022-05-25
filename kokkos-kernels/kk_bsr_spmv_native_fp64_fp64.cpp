@@ -18,9 +18,9 @@ int main(int argc, char **argv) {
 
     typedef int Ordinal;
     typedef int Offset; // cuSPARSE bsr matrix needs int
-    typedef Kokkos::Experimental::half_t AScalar;
-    typedef Kokkos::Experimental::half_t XScalar;
-    typedef Kokkos::Experimental::half_t YScalar;
+    typedef double AScalar;
+    typedef double XScalar;
+    typedef double YScalar;
     typedef Kokkos::Cuda Device;
 
     typedef KokkosSparse::Experimental::BsrMatrix<AScalar, Ordinal, Device, void, Offset>
@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
 
     const int niters = 1000;
     KokkosKernels::Experimental::Controls controls;
-    controls.setParameter("algorithm", "experimental_bsr_tc");
+    controls.setParameter("algorithm", "native");
     Kokkos::fence();
     auto start = Clock::now();
     for (int i = 0; i < niters; ++i) {

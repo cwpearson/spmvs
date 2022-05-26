@@ -24,10 +24,10 @@ Not all comparisons are possible, because:
 | ...       | fp16 += fp16 | cuSparse     | **N/A**                          |
 | ...       | ...          | native       | `kk-bsr-spmv-native-fp16-fp16`   |
 | ...       |              | tensor cores | `kk-bsr-spmv-tc-fp16-fp16`       |
-| Hybrid    | fp64 += fp64 | tensor cores (blocks) + cuSparse (remainder) | `kk-hybrid-spmv-tc-cusparse-fp64-fp64`|
-| ...       | ...          | tensor cores (blocks) + native (remainder)   | `kk-hybrid-spmv-tc-native-fp64-fp64`  |
-| ...       | fp16 += fp16 | tensor cores (blocks) + cuSparse (remainder) | `kk-hybrid-spmv-tc-cusparse-fp16-fp16`                               |
-| ...       | ...          | tensor cores (blocks) + native (remainder)   | `kk-hybrid-spmv-tc-native-fp16-fp16`  |
+| Hybrid    | fp64 += fp64 | tensor cores (blocks) + cuSparse (remainder) | `kk-hybrid-spmv-tc-cusparse-fp64-fp64` |
+| ...       | ...          | tensor cores (blocks) + native (remainder)   | `kk-hybrid-spmv-tc-native-fp64-fp64`   |
+| ...       | fp16 += fp16 | tensor cores (blocks) + cuSparse (remainder) | `kk-hybrid-spmv-tc-cusparse-fp16-fp16` |
+| ...       | ...          | tensor cores (blocks) + native (remainder)   | `kk-hybrid-spmv-tc-native-fp16-fp16`   |
 
 ## Static Data
 

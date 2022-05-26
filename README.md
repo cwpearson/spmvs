@@ -8,15 +8,14 @@ Not all comparisons are possible, because:
 * BSR cuSparse only supports `int` offsets and ordinals.
 * BSR cuSparse only supports `LayoutLeft` for multivector X and Y
 * BSR cuSparse does not support half precision
-* Kokkos kernels does not have a cuSparse TPL for CrsMatrix multivector
 
 
 | Matrix    | Arithmatic   | Impl.        | Binary |
 |-|-|-|-|
-| CrsMatrix | fp64 += fp64 | cuSparse     | **N/A** |
+| CrsMatrix | fp64 += fp64 | cuSparse     | `kk-crs-spmv-cusparse-fp64-fp64` |
 | ...       | ...          | native       | `kk-crs-spmv-native-fp64-fp64`   |
 | ...       | ...          | tensor cores | **N/A**                          | 
-| ...       | fp16 += fp16 | cuSparse     | **N/A**                          |
+| ...       | fp16 += fp16 | cuSparse     | `kk-crs-spmv-cusparse-fp64-fp64` |
 | ...       | ...          | native       | `kk-crs-spmv-native-fp16-fp16`   |
 | ...       | ...          | tensor cores | **N/A**                          | 
 | BsrMatrix | fp64 += fp64 | cuSparse     | `kk-bsr-spmv-cusparse-fp64-fp64` |
@@ -25,9 +24,9 @@ Not all comparisons are possible, because:
 | ...       | fp16 += fp16 | cuSparse     | **N/A**                          |
 | ...       | ...          | native       | `kk-bsr-spmv-native-fp16-fp16`   |
 | ...       |              | tensor cores | `kk-bsr-spmv-tc-fp16-fp16`       |
-| Hybrid    | fp64 += fp64 | tensor cores (blocks) + cuSparse (remainder) | **N/A**|
+| Hybrid    | fp64 += fp64 | tensor cores (blocks) + cuSparse (remainder) | `kk-hybrid-spmv-tc-cusparse-fp64-fp64`|
 | ...       | ...          | tensor cores (blocks) + native (remainder)   | `kk-hybrid-spmv-tc-native-fp64-fp64`  |
-| ...       | fp16 += fp16 | tensor cores (blocks) + cuSparse (remainder) | **N/A**                               |
+| ...       | fp16 += fp16 | tensor cores (blocks) + cuSparse (remainder) | `kk-hybrid-spmv-tc-cusparse-fp16-fp16`                               |
 | ...       | ...          | tensor cores (blocks) + native (remainder)   | `kk-hybrid-spmv-tc-native-fp16-fp16`  |
 
 ## Static Data
@@ -81,13 +80,13 @@ cmake .. \
 -DKokkos_ENABLE_HWLOC=Off \
 -DKokkosKernels_INST_COMPLEX_FLOAT=OFF \
 -DKokkosKernels_INST_DOUBLE=ON \
--DKokkosKernels_INST_FLOAT=OFF \
+-DKokkosKernels_INST_FLOAT=ON \
 -DKokkosKernels_INST_HALF=ON \
 -DKokkosKernels_INST_OFFSET_INT=ON \
 -DKokkosKernels_INST_OFFSET_SIZE_T=OFF \
--DKokkosKernels_INST_LAYOUTRIGHT=OFF \
+-DKokkosKernels_INST_LAYOUTRIGHT=ON \
 -DCMAKE_CXX_FLAGS="-lineinfo" \
--DKokkosKernels_ENABLE_TESTS=OFF \
+-DKokkosKernels_ENABLE_TESTS=ON \
 -DKokkos_ENABLE_CUDA=On \
 -DKokkos_ARCH_VOLTA70=On \
 -DKokkos_ENABLE_CUDA_LAMBDA=On \

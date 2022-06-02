@@ -38,6 +38,8 @@ Not all comparisons are possible, because:
 
 * vortex
     * `jsrun --smpiargs="-disable_gpu_hooks" -n 1 -g 1 ./kk-bsr-spmv-base-fp16-fp16 16 ../../static/bs16_block-constant_128_1.0_0.00_0.mtx`
+* weaver
+    * `bsub -Is -n 40 bash`
 
 ## Example Builds
 
@@ -74,19 +76,22 @@ cmake .. \
 
 bsub -W 6:00 -nnodes 1 --shared-launch -Is bash
 
+
 cmake .. \
 -DCMAKE_CXX_COMPILER=${NVCC_WRAPPER} \
 -DCMAKE_BUILD_TYPE=Release \
 -DKokkos_ENABLE_HWLOC=Off \
 -DKokkosKernels_INST_COMPLEX_FLOAT=OFF \
+-DKokkosKernels_INST_COMPLEX_DOUBLE=OFF \
 -DKokkosKernels_INST_DOUBLE=ON \
--DKokkosKernels_INST_FLOAT=ON \
+-DKokkosKernels_INST_FLOAT=OFF \
 -DKokkosKernels_INST_HALF=ON \
 -DKokkosKernels_INST_OFFSET_INT=ON \
 -DKokkosKernels_INST_OFFSET_SIZE_T=OFF \
--DKokkosKernels_INST_LAYOUTRIGHT=ON \
+-DKokkosKernels_INST_LAYOUTLEFT=ON \
+-DKokkosKernels_INST_LAYOUTRIGHT=OFF \
 -DCMAKE_CXX_FLAGS="-lineinfo" \
--DKokkosKernels_ENABLE_TESTS=ON \
+-DKokkosKernels_ENABLE_TESTS=OFF \
 -DKokkos_ENABLE_CUDA=On \
 -DKokkos_ARCH_VOLTA70=On \
 -DKokkos_ENABLE_CUDA_LAMBDA=On \

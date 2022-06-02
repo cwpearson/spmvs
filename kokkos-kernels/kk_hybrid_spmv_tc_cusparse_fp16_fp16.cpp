@@ -77,8 +77,14 @@ int main(int argc, char **argv) {
     //  we do y = (alpha)(sparse)(x) + (beta)(y)
     //        y = (alpha)(dense) (x) + (1)y
     const int niters = 1000;
+    const int nwarmup = 5;
     KokkosKernels::Experimental::Controls denseCtls, remCtls;
     denseCtls.setParameter("algorithm", "experimental_bsr_tc"); // use tc for dense part
+    Kokkos::fence();
+    for (int i = 0; i < nwarmup; ++i) {
+      KokkosSparse::spmv(remCtls, KokkosSparse::NoTranspose, alpha, remainder, x_sp, beta, y_sp);
+      KokkosSparse::spmv(denseCtls, KokkosSparse::NoTranspose, alpha, dense, x, YScalar(1), y);
+    }
     Kokkos::fence();
     auto start = Clock::now();
     for (int i = 0; i < niters; ++i) {
@@ -93,7 +99,7 @@ int main(int argc, char **argv) {
     << "," << a.nnz() 
     << "," << split.denseNnz 
     << "," << dense.nnz() * dense.blockDim() * dense.blockDim() 
-    << "," << a.nnz() - split.denseNnz;
+    << "," << remainder.nnz();
     // clang-format on
   }
   Kokkos::finalize();

@@ -3,9 +3,6 @@
 
 #include "base.hpp"
 
-typedef std::chrono::high_resolution_clock Clock;
-typedef std::chrono::duration<double> Duration;
-
 int main(int argc, char **argv) {
 
   Kokkos::initialize(argc, argv);
@@ -45,16 +42,12 @@ int main(int argc, char **argv) {
     const YScalar beta = -0.1;
 
     const int niters = 1000;
+    const int nwarmup = 5;
     KokkosKernels::Experimental::Controls controls;
-    Kokkos::fence();
-    auto start = Clock::now();
-    for (int i = 0; i < niters; ++i) {
-      KokkosSparse::spmv(controls, KokkosSparse::NoTranspose, alpha, a, x, beta, y);
-    }
-    Kokkos::fence();
-    Duration elapsed = Clock::now() - start;
+    double secsPerSpmv =
+        bench_single(niters, nwarmup, controls, KokkosSparse::NoTranspose, alpha, a, x, beta, y);
 
-    std::cout << elapsed.count() / niters;
+    std::cout << secsPerSpmv;
     std::cout << std::flush;
   }
   Kokkos::finalize();

@@ -60,6 +60,8 @@ elif [[ "$host" =~ .*vortex.* ]]; then
     module load cmake/3.18.0
     echo module load cuda/10.2.89
     module load cuda/10.2.89
+    # echo module load cuda/10.1.243
+    # module load cuda/10.1.243
     echo module load gcc/7.3.1
     module load gcc/7.3.1
     echo module load spectrum-mpi/rolling-release

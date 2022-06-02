@@ -5,13 +5,14 @@
 #BSUB -W 04:00
 #BSUB -nnodes 1
 
-export PFX=Fault_639_overlap_vortex_8n_32r
 export ROOT=$HOME/repos/spmvs
 export METHOD=kokkos-kernels
 export TMP_DIR=/vscratch1/cwpears
 export OUT_DIR=$ROOT/scripts/vortex
 
 . $ROOT/$METHOD/load-env.sh
+
+set -eou pipefail
 
 date
 
@@ -51,16 +52,46 @@ function F5 () {
 }
 
 crs_exes=\
-"kk-crs-spmv-native-fp16-fp16 \
-kk-crs-spmv-native-fp64-fp64"
+"
+kk-crs-spmv-cusparse-fp16-fp16 \
+kk-crs-spmv-cusparse-fp64-fp64 \
+kk-crs-spmv-native-fp16-fp16 \
+kk-crs-spmv-native-fp64-fp64 \
+"
 
 hybrid_exes=\
-"kk-hybrid-spmv-tc-native-fp16-fp16 \
-kk-hybrid-spmv-tc-native-fp64-fp64"
+"
+kk-hybrid-spmv-tc-cusparse-fp16-fp16 \
+kk-hybrid-spmv-tc-cusparse-fp64-fp64 \
+kk-hybrid-spmv-tc-native-fp16-fp16 \
+kk-hybrid-spmv-tc-native-fp64-fp64 \
+"
 
 mats=\
-"$HOME/suitesparse/Fault_639/Fault_639.mtx \
-$HOME/suitesparse/Bump_2911/Bump_2911.mtx"
+"
+$ROOT/static/block-constant_1024_*_*_0.0_0_bs16.mtx \
+$ROOT/static/block-constant_16384_*_*_0.0_0_bs16.mtx \
+$ROOT/static/block-constant_131072_*_*_0.0_0_bs16.mtx \
+$ROOT/static/block-diagonal-constant_1024_*_*_0_bs16.mtx \
+$ROOT/static/block-diagonal-constant_16384_*_*_0_bs16.mtx \
+$ROOT/static/block-diagonal-constant_131072_*_*_0_bs16.mtx \
+$ROOT/static/block-diagonal-variable_1024_*_*_*_0.mtx \
+$ROOT/static/block-diagonal-variable_1024_*_*_*_*_pad16.mtx \
+$ROOT/static/block-diagonal-variable_16384_*_*_*_0.mtx \
+$ROOT/static/block-diagonal-variable_16384_*_*_*_0_pad16.mtx \
+$ROOT/static/block-diagonal-variable_131072_*_*_*_0.mtx \
+$ROOT/static/block-diagonal-variable_131072_*_*_*_0_pad16.mtx \
+$ROOT/static/block-variable_1024_*_*_*_*_0.mtx \
+$ROOT/static/block-variable_1024_*_*_*_*_0_pad16.mtx \
+$ROOT/static/block-variable_16384_*_*_*_*_0.mtx \
+$ROOT/static/block-variable_16384_*_*_*_*_0_pad16.mtx \
+$ROOT/static/block-variable_131072_*_*_*_*_0.mtx \
+$ROOT/static/block-variable_131072_*_*_*_*_0_pad16.mtx \
+$HOME/suitesparse/Fault_639/Fault_639.mtx \
+$HOME/suitesparse/Bump_2911/Bump_2911.mtx \
+"
+
+date
 
 echo -n "mat"
 for exe in $crs_exes; do
@@ -84,3 +115,4 @@ for mat in $mats; do
     echo ""
 done
 
+date

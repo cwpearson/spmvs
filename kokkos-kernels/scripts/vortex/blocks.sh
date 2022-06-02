@@ -1,17 +1,18 @@
 #!/bin/bash
-#BSUB -J Fault_639_overlap_2n_8r
-#BSUB -o Fault_639_overlap_2n_8r.o%J
-#BSUB -e Fault_639_overlap_2n_8r.e%J
-#BSUB -W 00:20
+#BSUB -J blocks
+#BSUB -o blocks.o%J
+#BSUB -e blocks.e%J
+#BSUB -W 04:00
 #BSUB -nnodes 1
 
-export PFX=Fault_639_overlap_vortex_8n_32r
 export ROOT=$HOME/repos/spmvs
 export METHOD=kokkos-kernels
 export TMP_DIR=/vscratch1/cwpears
 export OUT_DIR=$ROOT/scripts/vortex
 
 . $ROOT/$METHOD/load-env.sh
+
+set -eou pipefail
 
 date
 
@@ -51,27 +52,48 @@ function F5 () {
 }
 
 bsr_exes=\
-"kk-bsr-spmv-cusparse-fp64-fp64 \
+"
+kk-bsr-spmv-cusparse-fp64-fp64 \
 kk-bsr-spmv-native-fp16-fp16 \
 kk-bsr-spmv-native-fp64-fp64 \
 kk-bsr-spmv-tc-fp16-fp16 \
-kk-bsr-spmv-tc-fp64-fp64"
+kk-bsr-spmv-tc-fp64-fp64 \
+"
 
 crs_exes=\
-"kk-crs-spmv-native-fp16-fp16 \
-kk-crs-spmv-native-fp64-fp64"
+"
+kk-crs-spmv-cusparse-fp16-fp16 \
+kk-crs-spmv-cusparse-fp64-fp64 \
+kk-crs-spmv-native-fp16-fp16 \
+kk-crs-spmv-native-fp64-fp64 \
+"
 
 hybrid_exes=\
-"kk-hybrid-spmv-tc-native-fp16-fp16 \
-kk-hybrid-spmv-tc-native-fp64-fp64"
+"
+kk-hybrid-spmv-tc-cusparse-fp16-fp16 \
+kk-hybrid-spmv-tc-cusparse-fp64-fp64 \
+kk-hybrid-spmv-tc-native-fp16-fp16 \
+kk-hybrid-spmv-tc-native-fp64-fp64 \
+"
 
+# any matrix with the same block structure should be the same
 block_mats=\
-"bs16_block-constant_128_1.0_0.00_0.mtx \
-bs16_block-constant_128_1.0_0.00_1.mtx \
-bs16_block-constant_128_1.0_0.00_2.mtx \
-bs16_block-constant_128_1.0_0.00_3.mtx \
-bs16_block-constant_128_1.0_0.00_4.mtx"
+"
+$ROOT/static/block-constant_1024_*_1.0_*_0_bs16.mtx \
+$ROOT/static/block-diagonal-constant_1024_1.0_0.0_0_bs16.mtx \
+$ROOT/static/block-diagonal-variable_1024_*_1.0_*_0_pad16_fill16.mtx \
+$ROOT/static/block-variable_1024_*_*_1.0_*_0_pad16_fill16.mtx \
+$ROOT/static/block-constant_16384_*_1.0_*_0_bs16.mtx \
+$ROOT/static/block-diagonal-constant_16384_1.0_0.0_0_bs16.mtx \
+$ROOT/static/block-diagonal-variable_16384_*_1.0_*_0_pad16_fill16.mtx \
+$ROOT/static/block-variable_16384_*_*_1.0_*_0_pad16_fill16.mtx \
+$ROOT/static/block-constant_131072_*_1.0_*_0_bs16.mtx \
+$ROOT/static/block-diagonal-constant_131072_1.0_0.0_0_bs16.mtx \
+$ROOT/static/block-diagonal-variable_131072_*_1.0_*_0_pad16_fill16.mtx \
+$ROOT/static/block-variable_131072_*_*_1.0_*_0_pad16_fill16.mtx \
+"
 
+date
 
 echo -n "mat"
 for exe in $bsr_exes; do
@@ -89,16 +111,17 @@ for mat in $block_mats; do
     echo -n `basename $mat`
     for exe in $bsr_exes; do
         echo -n ","
-        JSRUN $ROOT/$METHOD/build/$exe 16 $ROOT/static/blocks/$mat
+        JSRUN $ROOT/$METHOD/build/$exe 16 $mat
     done
     for exe in $crs_exes; do
         echo -n ","
-        JSRUN $ROOT/$METHOD/build/$exe $ROOT/static/blocks/$mat
+        JSRUN $ROOT/$METHOD/build/$exe $mat
     done
     for exe in $hybrid_exes; do
         echo -n ","
-        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.5 $ROOT/static/blocks/$mat
+        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.5 $mat
     done
     echo ""
 done
 
+date

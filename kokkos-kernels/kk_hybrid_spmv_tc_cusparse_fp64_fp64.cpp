@@ -95,7 +95,7 @@ int main(int argc, char **argv) {
     Duration elapsed = Clock::now() - start;
 
     // clang-format off
-    std::cout << elapsed.count() / niters 
+    std::cout << elapsed.count() / niters * 1e6 
     << "," << a.nnz() 
     << "," << split.denseNnz 
     << "," << dense.nnz() * dense.blockDim() * dense.blockDim() 

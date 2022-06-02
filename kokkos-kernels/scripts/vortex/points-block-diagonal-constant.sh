@@ -2,7 +2,7 @@
 #BSUB -J points-block-diagonal-constant
 #BSUB -o points-block-diagonal-constant.o%J
 #BSUB -e points-block-diagonal-constant.e%J
-#BSUB -W 04:00
+#BSUB -W 01:00
 #BSUB -nnodes 1
 
 export ROOT=$HOME/repos/spmvs

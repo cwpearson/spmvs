@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
     double secsPerSpmv =
         bench_single(niters, nwarmup, controls, KokkosSparse::NoTranspose, alpha, a, x, beta, y);
 
-    std::cout << secsPerSpmv;
+    std::cout << secsPerSpmv * 1e6;
     std::cout << std::flush;
   }
   Kokkos::finalize();

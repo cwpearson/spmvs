@@ -1,7 +1,7 @@
 #!/bin/bash
-#BSUB -J points-block-diagonal-variable
-#BSUB -o points-block-diagonal-variable.o%J
-#BSUB -e points-block-diagonal-variable.e%J
+#BSUB -J points-block-diagonal-constant-131072
+#BSUB -o points-block-diagonal-constant-131072.o%J
+#BSUB -e points-block-diagonal-constant-131072.e%J
 #BSUB -W 04:00
 #BSUB -nnodes 1
 
@@ -56,21 +56,11 @@ kk-hybrid-spmv-tc-native-fp64-fp64 \
 "
 
 # dont match fill (full blocks)
-# separate out sprinkes since performance is quite different
+# dont match fade 1.0 (full blocks)
 mats=\
 "
-$ROOT/static/block-diagonal-variable_1024_*_*_0.0_*.mtx \
-$ROOT/static/block-diagonal-variable_1024_*_*_0.0_*_pad16.mtx \
-$ROOT/static/block-diagonal-variable_1024_*_*_0.001_*.mtx \
-$ROOT/static/block-diagonal-variable_1024_*_*_0.001_*_pad16.mtx \
-$ROOT/static/block-diagonal-variable_16384_*_*_0.0_*.mtx \
-$ROOT/static/block-diagonal-variable_16384_*_*_0.0_*_pad16.mtx \
-$ROOT/static/block-diagonal-variable_16384_*_*_0.001_*.mtx \
-$ROOT/static/block-diagonal-variable_16384_*_*_0.001_*_pad16.mtx \
-$ROOT/static/block-diagonal-variable_131072_*_*_0.0_*.mtx \
-$ROOT/static/block-diagonal-variable_131072_*_*_0.0_*_pad16.mtx \
-$ROOT/static/block-diagonal-variable_131072_*_*_0.001_*.mtx \
-$ROOT/static/block-diagonal-variable_131072_*_*_0.001_*_pad16.mtx \
+$ROOT/static/block-diagonal-constant_131072_!(1.0)_0.0_*_bs16.mtx \
+$ROOT/static/block-diagonal-constant_131072_!(1.0)_1000_*_bs16.mtx \
 "
 
 date

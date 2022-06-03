@@ -1,8 +1,8 @@
 #!/bin/bash
-#BSUB -J points-block-constant
-#BSUB -o points-block-constant.o%J
-#BSUB -e points-block-constant.e%J
-#BSUB -W 01:00
+#BSUB -J blocks-131072
+#BSUB -o blocks-131072.o%J
+#BSUB -e blocks-131072.e%J
+#BSUB -W 04:00
 #BSUB -nnodes 1
 
 export ROOT=$HOME/repos/spmvs
@@ -13,7 +13,8 @@ export OUT_DIR=$ROOT/scripts/vortex
 . $ROOT/$METHOD/load-env.sh
 
 set -eou pipefail
-shopt -s extglob
+
+date
 
 export KOKKOS_NUM_DEVICES=1
 export CUDA_LAUNCH_BLOCKING=0
@@ -27,7 +28,6 @@ jsrun \
 -g 1 \
 -c 2 \
 -b rs \
--l gpu-cpu \
 "$@"
 }
 
@@ -35,9 +35,30 @@ function F1 () {
     "$@" | cut -d"," -f1 | tr -d '\n'
 }
 
-function F2-5 () {
-    "$@" | cut -d"," --fields=2,3,4,5 | tr -d '\n'
+function F2 () {
+    "$@" | cut -d"," -f2 | tr -d '\n'
 }
+
+function F3 () {
+    "$@" | cut -d"," -f3 | tr -d '\n'
+}
+
+function F4 () {
+    "$@" | cut -d"," -f4 | tr -d '\n'
+}
+
+function F5 () {
+    "$@" | cut -d"," -f5 | tr -d '\n'
+}
+
+bsr_exes=\
+"
+kk-bsr-spmv-cusparse-fp64-fp64 \
+kk-bsr-spmv-native-fp16-fp16 \
+kk-bsr-spmv-native-fp64-fp64 \
+kk-bsr-spmv-tc-fp16-fp16 \
+kk-bsr-spmv-tc-fp64-fp64 \
+"
 
 crs_exes=\
 "
@@ -55,23 +76,22 @@ kk-hybrid-spmv-tc-native-fp16-fp16 \
 kk-hybrid-spmv-tc-native-fp64-fp64 \
 "
 
-
-# don't match fade 1.0 (full blocks)
-# don't match fill (full blocks)
-mats=\
+# any matrix with the same block structure should be the same
+# don't need faded with fill because it's the same as non-fade
+block_mats=\
 "
-$ROOT/static/block-constant_1024_*_!(1.0)_0.0_*_bs16.mtx \
-$ROOT/static/block-constant_16384_*_!(1.0)_0.0_*_bs16.mtx \
+$ROOT/static/block-constant_131072_*_1.0_*_0_bs16.mtx \
+$ROOT/static/block-diagonal-constant_131072_1.0_0_0_bs16.mtx \
+$ROOT/static/block-diagonal-variable_131072_*_1.0_*_0_pad16_fill16.mtx \
+$ROOT/static/block-variable_131072_*_*_1.0_*_0_pad16_fill16.mtx \
 "
 
 date
 
 echo -n "mat"
-
-# column headers for matrix statistics
-echo -n ",nnz,dense nnz (real),dense nnz (fill),sparse nnz"
-
-# column header for each method
+for exe in $bsr_exes; do
+    echo -n ","$exe
+done
 for exe in $crs_exes; do
     echo -n ","$exe
 done
@@ -80,15 +100,12 @@ for exe in $hybrid_exes; do
 done
 echo ""
 
-for mat in $mats; do
-    # print matrix name
+for mat in $block_mats; do
     echo -n `basename $mat`
-
-    # print matrix statistics
-    echo -n ","
-    F2-5 JSRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.5 $mat
-
-    # print performance 
+    for exe in $bsr_exes; do
+        echo -n ","
+        JSRUN $ROOT/$METHOD/build/$exe 16 $mat
+    done
     for exe in $crs_exes; do
         echo -n ","
         JSRUN $ROOT/$METHOD/build/$exe $mat

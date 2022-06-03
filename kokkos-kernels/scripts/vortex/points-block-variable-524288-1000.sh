@@ -1,7 +1,7 @@
 #!/bin/bash
-#BSUB -J points-block-variable
-#BSUB -o points-block-variable.o%J
-#BSUB -e points-block-variable.e%J
+#BSUB -J points-block-variable-524288-1000
+#BSUB -o points-block-variable-524288-1000.o%J
+#BSUB -e points-block-variable-524288-1000.e%J
 #BSUB -W 04:00
 #BSUB -nnodes 1
 
@@ -57,18 +57,8 @@ kk-hybrid-spmv-tc-native-fp64-fp64 \
 
 mats=\
 "
-$ROOT/static/block-variable_1024_*_*_*_0.0_*.mtx \
-$ROOT/static/block-variable_1024_*_*_*_0.0_*_pad16.mtx \
-$ROOT/static/block-variable_1024_*_*_*_0.001_*.mtx \
-$ROOT/static/block-variable_1024_*_*_*_0.001_*_pad16.mtx \
-$ROOT/static/block-variable_16384_*_*_*_0.0_*.mtx \
-$ROOT/static/block-variable_16384_*_*_*_0.001_*.mtx \
-$ROOT/static/block-variable_16384_*_*_*_0.001_*_pad16.mtx \
-$ROOT/static/block-variable_16384_*_*_*_0.0_*_pad16.mtx \
-$ROOT/static/block-variable_131072_*_*_*_0.0_*.mtx \
-$ROOT/static/block-variable_131072_*_*_*_0.0_*_pad16.mtx \
-$ROOT/static/block-variable_131072_*_*_*_0.001_*.mtx \
-$ROOT/static/block-variable_131072_*_*_*_0.001_*_pad16.mtx \
+$ROOT/static/block-variable_524288_*_*_*_1000_0.mtx \
+$ROOT/static/block-variable_524288_*_*_*_1000_0_pad16.mtx \
 "
 
 date

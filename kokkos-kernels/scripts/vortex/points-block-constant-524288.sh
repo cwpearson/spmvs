@@ -1,7 +1,7 @@
 #!/bin/bash
-#BSUB -J points-block-constant
-#BSUB -o points-block-constant.o%J
-#BSUB -e points-block-constant.e%J
+#BSUB -J points-block-constant-524288
+#BSUB -o points-block-constant-524288.o%J
+#BSUB -e points-block-constant-524288.e%J
 #BSUB -W 01:00
 #BSUB -nnodes 1
 
@@ -60,8 +60,7 @@ kk-hybrid-spmv-tc-native-fp64-fp64 \
 # don't match fill (full blocks)
 mats=\
 "
-$ROOT/static/block-constant_1024_*_!(1.0)_0.0_*_bs16.mtx \
-$ROOT/static/block-constant_16384_*_!(1.0)_0.0_*_bs16.mtx \
+$ROOT/static/block-constant_524288_*_!(1.0)_0.0_*_bs16.mtx \
 "
 
 date

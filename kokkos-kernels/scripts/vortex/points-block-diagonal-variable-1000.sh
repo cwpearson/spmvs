@@ -1,8 +1,8 @@
 #!/bin/bash
-#BSUB -J points-block-constant
-#BSUB -o points-block-constant.o%J
-#BSUB -e points-block-constant.e%J
-#BSUB -W 01:00
+#BSUB -J points-block-diagonal-variable-1000
+#BSUB -o points-block-diagonal-variable-1000.o%J
+#BSUB -e points-block-diagonal-variable-1000.e%J
+#BSUB -W 04:00
 #BSUB -nnodes 1
 
 export ROOT=$HOME/repos/spmvs
@@ -55,13 +55,14 @@ kk-hybrid-spmv-tc-native-fp16-fp16 \
 kk-hybrid-spmv-tc-native-fp64-fp64 \
 "
 
-
-# don't match fade 1.0 (full blocks)
-# don't match fill (full blocks)
+# dont match fill (full blocks)
+# separate out sprinkes since performance is quite different
 mats=\
 "
-$ROOT/static/block-constant_1024_*_!(1.0)_0.0_*_bs16.mtx \
-$ROOT/static/block-constant_16384_*_!(1.0)_0.0_*_bs16.mtx \
+$ROOT/static/block-diagonal-variable_16384_*_*_1000_0.mtx \
+$ROOT/static/block-diagonal-variable_16384_*_*_1000_0_pad16.mtx \
+$ROOT/static/block-diagonal-variable_1024_*_*_1000_0.mtx \
+$ROOT/static/block-diagonal-variable_1024_*_*_1000_0_pad16.mtx \
 "
 
 date

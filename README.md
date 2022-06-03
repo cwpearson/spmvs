@@ -41,6 +41,39 @@ Not all comparisons are possible, because:
 * weaver
     * `bsub -Is -n 40 bash`
 
+## Profiling on Vortex
+
+`nv-nsight-cu-cli` should be installed alongside `nvcc`
+
+reconfigure with `-DCMAKE_CXX_FLAGS="-lineinfo"`.
+For this to work you will need to have -DCMAKE_CXX_COMPILER be the `nvcc_wrapper` (done automatically in `load-env.sh`) 
+
+something like `jsrun --smpiargs="-disable_gpu_hooks" -n 1 -g 1 -c 2 -l gpu-cpu nv-nsight-cu-cli ./main /vscratch1/cwpears/2cubes_sphere.mtx`
+
+for the nvidia compiler
+
+You can skip the first `26` launches and then profile the next `2` like this:
+
+* `-k`: provide a regex for the kernels to profile (`TcFunctor`)
+* `--kernel-regex-base demangled`: use the demangled name for regex matching
+* `-s`: skip the first number of kernels that match the regex
+* `-c`: the number of matching herkensl to profile
+* `-o`: output file (automatically appends file extension)
+* `-f`: force overwrite
+* `--section`: add some analysis (can pass `".*"` to gather everything)
+  * `--section WarpStateStats`
+  * `--section ScheduleStats`
+
+
+```
+jsrun --smpiargs="-disable_gpu_hooks" -n 1 -g 1 -c 1 -l gpu-cpu nv-nsight-cu-cli -k ".*cuda.*" -s 26 -c 2 ./main /vscratch1/cwpears/2cubes_sphere.mtx
+```
+
+```
+jsrun --smpiargs="-disable_gpu_hooks" -n 1 -g 1 -c 1 -l gpu-cpu nv-nsight-cu-cli -k ".*Tc2.*" --kernel-regex-base demangled -s 26 -c 2 -o 3D_51448_3D_synth_15 -f --section ".*" ./tc2_synthetic /vscratch1/cwpears/3D_51448_3D.mtx
+```
+
+
 ## Example Builds
 
 baseline options on Vortex

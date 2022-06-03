@@ -2,7 +2,7 @@
 #BSUB -J points-block-diagonal-constant
 #BSUB -o points-block-diagonal-constant.o%J
 #BSUB -e points-block-diagonal-constant.e%J
-#BSUB -W 01:00
+#BSUB -W 04:00
 #BSUB -nnodes 1
 
 export ROOT=$HOME/repos/spmvs
@@ -59,12 +59,12 @@ kk-hybrid-spmv-tc-native-fp64-fp64 \
 # dont match fade 1.0 (full blocks)
 mats=\
 "
-$ROOT/static/block-diagonal-constant_1024_!(1.0)_0.0_*_bs16.mtx \
-$ROOT/static/block-diagonal-constant_1024_!(1.0)_0.001_*_bs16.mtx \
-$ROOT/static/block-diagonal-constant_16384_!(1.0)_0.0_*_bs16.mtx \
-$ROOT/static/block-diagonal-constant_16384_!(1.0)_0.001_*_bs16.mtx \
-$ROOT/static/block-diagonal-constant_131072_!(1.0)_0.0_*_bs16.mtx \
-$ROOT/static/block-diagonal-constant_131072_!(1.0)_0.001_*_bs16.mtx \
+$ROOT/static/block-diagonal-constant_1024_!(1.0)_0_*_bs16.mtx \
+$ROOT/static/block-diagonal-constant_1024_!(1.0)_1000_*_bs16.mtx \
+$ROOT/static/block-diagonal-constant_16384_!(1.0)_0_*_bs16.mtx \
+$ROOT/static/block-diagonal-constant_16384_!(1.0)_1000_*_bs16.mtx \
+$ROOT/static/block-diagonal-constant_524288_!(1.0)_0_*_bs16.mtx \
+$ROOT/static/block-diagonal-constant_524288_!(1.0)_1000_*_bs16.mtx \
 "
 
 date

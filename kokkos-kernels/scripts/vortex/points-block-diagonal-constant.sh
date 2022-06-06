@@ -63,8 +63,6 @@ $ROOT/static/block-diagonal-constant_1024_!(1.0)_0_*_bs16.mtx \
 $ROOT/static/block-diagonal-constant_1024_!(1.0)_1000_*_bs16.mtx \
 $ROOT/static/block-diagonal-constant_16384_!(1.0)_0_*_bs16.mtx \
 $ROOT/static/block-diagonal-constant_16384_!(1.0)_1000_*_bs16.mtx \
-$ROOT/static/block-diagonal-constant_524288_!(1.0)_0_*_bs16.mtx \
-$ROOT/static/block-diagonal-constant_524288_!(1.0)_1000_*_bs16.mtx \
 "
 
 date

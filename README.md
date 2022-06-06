@@ -66,11 +66,7 @@ You can skip the first `26` launches and then profile the next `2` like this:
 
 
 ```
-jsrun --smpiargs="-disable_gpu_hooks" -n 1 -g 1 -c 1 -l gpu-cpu nv-nsight-cu-cli -k ".*cuda.*" -s 26 -c 2 ./main /vscratch1/cwpears/2cubes_sphere.mtx
-```
-
-```
-jsrun --smpiargs="-disable_gpu_hooks" -n 1 -g 1 -c 1 -l gpu-cpu nv-nsight-cu-cli -k ".*Tc2.*" --kernel-regex-base demangled -s 26 -c 2 -o 3D_51448_3D_synth_15 -f --section ".*" ./tc2_synthetic /vscratch1/cwpears/3D_51448_3D.mtx
+jsrun --smpiargs="-disable_gpu_hooks" -n 1 -g 1 -c 2 -l gpu-cpu nv-nsight-cu-cli --target-processes=all --kernel-regex-base demangled -k "TensorCore" -s 10 -c 1 -o block-constant_131072_0.00078125_1.0_0_0_bs16_xlayout -f --section=".*" ./kk-bsr-spmv-tc-fp16-fp16 16 ../../static/block-constant_131072_0.00078125_1.0_0_0_bs16.mtx
 ```
 
 
@@ -122,9 +118,9 @@ cmake .. \
 -DKokkosKernels_INST_OFFSET_INT=ON \
 -DKokkosKernels_INST_OFFSET_SIZE_T=OFF \
 -DKokkosKernels_INST_LAYOUTLEFT=ON \
--DKokkosKernels_INST_LAYOUTRIGHT=OFF \
+-DKokkosKernels_INST_LAYOUTRIGHT=ON \
 -DCMAKE_CXX_FLAGS="-lineinfo" \
--DKokkosKernels_ENABLE_TESTS=OFF \
+-DKokkosKernels_ENABLE_TESTS=ON \
 -DKokkos_ENABLE_CUDA=On \
 -DKokkos_ARCH_VOLTA70=On \
 -DKokkos_ENABLE_CUDA_LAMBDA=On \

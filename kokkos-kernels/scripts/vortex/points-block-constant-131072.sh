@@ -60,7 +60,7 @@ kk-hybrid-spmv-tc-native-fp64-fp64 \
 # don't match fill (full blocks)
 mats=\
 "
-$ROOT/static/block-constant_131072_*_!(1.0)_0.0_*_bs16.mtx \
+$ROOT/static/block-constant_131072_*_!(1.0)_0_*_bs16.mtx \
 "
 
 date

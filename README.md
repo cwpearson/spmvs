@@ -98,6 +98,28 @@ cmake .. \
 -DKokkosKernels_ENABLE_TESTS=OFF 
 ```
 
+perlmutter
+```
+source ../load-env.sh
+cmake .. \
+-DCMAKE_CXX_COMPILER=${NVCC_WRAPPER} \
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_CXX_FLAGS="-lineinfo -I/opt/nvidia/hpc_sdk/Linux_x86_64/21.11/profilers/Nsight_Compute/../../math_libs/11.5/include" \
+-DKokkos_ENABLE_CUDA=On \
+-DKokkos_ENABLE_CUDA_LAMBDA=On \
+-DKokkos_ENABLE_HWLOC=Off \
+-DKokkosKernels_INST_COMPLEX_FLOAT=OFF \
+-DKokkosKernels_INST_DOUBLE=ON \
+-DKokkosKernels_INST_FLOAT=OFF \
+-DKokkosKernels_INST_HALF=ON \
+-DKokkosKernels_INST_OFFSET_INT=ON \
+-DKokkosKernels_INST_OFFSET_SIZE_T=OFF \
+-DKokkosKernels_INST_LAYOUTRIGHT=OFF \
+-DKokkosKernels_INST_MEMSPACE_CUDAUVMSPACE=OFF \
+-DKokkosKernels_ENABLE_TPL_CUSPARSE=ON \
+-DKokkosKernels_ENABLE_TESTS=OFF 
+```
+
 ## Additional options
 
 

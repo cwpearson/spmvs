@@ -21,8 +21,6 @@ export OUT_DIR=$ROOT/scripts/perlmutter
 
 set -eou pipefail
 
-date
-
 export KOKKOS_NUM_DEVICES=1
 export CUDA_LAUNCH_BLOCKING=0
 

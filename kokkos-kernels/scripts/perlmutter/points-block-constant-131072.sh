@@ -84,16 +84,16 @@ for mat in $mats; do
 
     # print matrix statistics
     echo -n ","
-    F2-5 JSRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.5 $mat
+    F2-5 SRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.5 $mat
 
     # print performance 
     for exe in $crs_exes; do
         echo -n ","
-        JSRUN $ROOT/$METHOD/build/$exe $mat
+        SRUN $ROOT/$METHOD/build/$exe $mat
     done
     for exe in $hybrid_exes; do
         echo -n ","
-        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.5 $mat
+        F1 SRUN $ROOT/$METHOD/build/$exe 16 0.5 $mat
     done
     echo ""
 done

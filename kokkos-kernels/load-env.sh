@@ -17,9 +17,15 @@ if [[ "$NERSC_HOST" == perlmutter ]]; then
     echo \$NERSC_HOST matched perlmutter
 
     export CUDAARCHS="80" # for cmake 3.20+
-    module load cuda/11.3.0
-    module load cmake/3.20.5
-    module load gcc/9.3.0
+    
+    echo module load PrgEnv-gnu
+    module load PrgEnv-gnu
+    echo module load cmake/3.22.0
+    module load cmake/3.22.0
+    echo module load cudatoolkit
+    module load cudatoolkit
+    echo module load cpe-cuda
+    module load cpe-cuda
 
     which cmake
     which gcc

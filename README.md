@@ -8,6 +8,7 @@ Not all comparisons are possible, because:
 * BSR cuSparse only supports `int` offsets and ordinals.
 * BSR cuSparse only supports `LayoutLeft` for multivector X and Y
 * BSR cuSparse does not support half precision
+* cusparseSpMM in CUDA 11.5.1+ (CrsMatrix-multivector) does FP16 operands at FP32 precision
 
 
 | Matrix    | Arithmatic   | Impl.        | Binary |

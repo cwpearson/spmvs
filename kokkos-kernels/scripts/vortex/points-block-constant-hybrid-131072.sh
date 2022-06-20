@@ -2,7 +2,7 @@
 #BSUB -J points-block-constant-hybrid-131072
 #BSUB -o points-block-constant-hybrid-131072.o%J
 #BSUB -e points-block-constant-hybrid-131072.e%J
-#BSUB -W 01:00
+#BSUB -W 04:00
 #BSUB -nnodes 1
 
 export ROOT=$HOME/repos/spmvs
@@ -49,6 +49,8 @@ kk-crs-spmv-native-fp64-fp64 \
 
 hybrid_exes=\
 "
+kk-hybrid-spmv-cusparse-cusparse-fp16-fp16 \
+kk-hybrid-spmv-cusparse-cusparse-fp64-fp64 \
 kk-hybrid-spmv-tc-cusparse-fp16-fp16 \
 kk-hybrid-spmv-tc-cusparse-fp64-fp64 \
 kk-hybrid-spmv-tc-native-fp16-fp16 \
@@ -56,12 +58,33 @@ kk-hybrid-spmv-tc-native-fp64-fp64 \
 "
 
 
-# don't match fade 1.0 (full blocks)
-# don't match fill (full blocks)
+
 mats=\
 "
-$ROOT/static/block-constant_1024_*_!(1.0)_0.0_*_bs16.mtx \
-$ROOT/static/block-constant_16384_*_!(1.0)_0.0_*_bs16.mtx \
+$ROOT/static/block-constant-hybrid_131072_0.00078125_0.5_0.1_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131072_0.00078125_0.5_0.5_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131072_0.00078125_0.5_1.0_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131072_0.00078125_0.5_2.0_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131072_0.00078125_0.7_0.1_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131072_0.00078125_0.7_0.5_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131072_0.00078125_0.7_1.0_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131072_0.00078125_0.7_2.0_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131072_0.00078125_1.0_0.1_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131072_0.00078125_1.0_0.5_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131072_0.00078125_1.0_1.0_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131072_0.00078125_1.0_2.0_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_0.5_0.1_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_0.5_0.5_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_0.5_1.0_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_0.5_2.0_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_0.7_0.1_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_0.7_0.5_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_0.7_1.0_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_0.7_2.0_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_1.0_0.1_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_1.0_0.5_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_1.0_1.0_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_1.0_2.0_0_bs16.mtx
 "
 
 date

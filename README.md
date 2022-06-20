@@ -73,7 +73,7 @@ jsrun --smpiargs="-disable_gpu_hooks" -n 1 -g 1 -c 2 -l gpu-cpu nv-nsight-cu-cli
 
 ## Example Builds
 
-baseline options on Vortex
+Vortex
 ```
 source ../load-env.sh
 cmake .. \
@@ -103,6 +103,7 @@ cmake .. \
 -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_CXX_FLAGS="-lineinfo -I/opt/nvidia/hpc_sdk/Linux_x86_64/21.11/profilers/Nsight_Compute/../../math_libs/11.5/include" \
 -DKokkos_ENABLE_CUDA=On \
+-DKokkos_ARCH_VOLTA70=On \
 -DKokkos_ENABLE_CUDA_LAMBDA=On \
 -DKokkos_ENABLE_HWLOC=Off \
 -DKokkosKernels_INST_COMPLEX_FLOAT=OFF \
@@ -120,32 +121,4 @@ cmake .. \
 ## Additional options
 
 
-
-* CUDA on volta: 
-```
--DKokkos_ARCH_VOLTA70=On \
-```
-
 bsub -W 6:00 -nnodes 1 --shared-launch -Is bash
-
-
-cmake .. \
--DCMAKE_CXX_COMPILER=${NVCC_WRAPPER} \
--DCMAKE_BUILD_TYPE=Release \
--DKokkos_ENABLE_HWLOC=Off \
--DKokkosKernels_INST_COMPLEX_FLOAT=OFF \
--DKokkosKernels_INST_COMPLEX_DOUBLE=OFF \
--DKokkosKernels_INST_DOUBLE=ON \
--DKokkosKernels_INST_FLOAT=OFF \
--DKokkosKernels_INST_HALF=ON \
--DKokkosKernels_INST_OFFSET_INT=ON \
--DKokkosKernels_INST_OFFSET_SIZE_T=OFF \
--DKokkosKernels_INST_LAYOUTLEFT=ON \
--DKokkosKernels_INST_LAYOUTRIGHT=ON \
--DCMAKE_CXX_FLAGS="-lineinfo" \
--DKokkosKernels_ENABLE_TESTS=ON \
--DKokkos_ENABLE_CUDA=On \
--DKokkos_ARCH_VOLTA70=On \
--DKokkos_ENABLE_CUDA_LAMBDA=On \
--DKokkosKernels_ENABLE_TPL_CUSPARSE=ON \
--DKokkosKernels_INST_MEMSPACE_CUDAUVMSPACE=OFF

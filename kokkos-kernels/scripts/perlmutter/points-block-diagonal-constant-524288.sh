@@ -2,7 +2,7 @@
 #SBATCH -A m3918_g
 #SBATCH -C gpu
 #SBATCH -q regular
-#SBATCH -t 4:00:00
+#SBATCH -t 0:30:00
 #SBATCH -n 1
 #SBATCH --ntasks-per-node=1
 #SBATCH -c 128
@@ -58,7 +58,7 @@ kk-hybrid-spmv-tc-native-fp64-fp64 \
 # dont match fade 1.0 (full blocks)
 mats=\
 "
-$STATIC/block-diagonal-constant_524288_!(1.0)_0.0_*_bs16.mtx \
+$STATIC/block-diagonal-constant_524288_!(1.0)_0_*_bs16.mtx \
 $STATIC/block-diagonal-constant_524288_!(1.0)_1000_*_bs16.mtx \
 "
 
@@ -84,16 +84,16 @@ for mat in $mats; do
 
     # print matrix statistics
     echo -n ","
-    F2-5 JSRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.5 $mat
+    F2-5 SRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.5 $mat
 
     # print performance 
     for exe in $crs_exes; do
         echo -n ","
-        JSRUN $ROOT/$METHOD/build/$exe $mat
+        SRUN $ROOT/$METHOD/build/$exe $mat
     done
     for exe in $hybrid_exes; do
         echo -n ","
-        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.5 $mat
+        F1 SRUN $ROOT/$METHOD/build/$exe 16 0.5 $mat
     done
     echo ""
 done

@@ -2,7 +2,7 @@
 #SBATCH -A m3918_g
 #SBATCH -C gpu
 #SBATCH -q regular
-#SBATCH -t 1:00:00
+#SBATCH -t 4:00:00
 #SBATCH -n 1
 #SBATCH --ntasks-per-node=1
 #SBATCH -c 128
@@ -20,7 +20,6 @@ export OUT_DIR=$ROOT/scripts/perlmutter
 . $ROOT/$METHOD/load-env.sh
 
 set -eou pipefail
-shopt -s extglob
 
 export KOKKOS_NUM_DEVICES=1
 export CUDA_LAUNCH_BLOCKING=0
@@ -34,9 +33,30 @@ function F1 () {
     "$@" | cut -d"," -f1 | tr -d '\n'
 }
 
-function F2-5 () {
-    "$@" | cut -d"," --fields=2,3,4,5 | tr -d '\n'
+function F2 () {
+    "$@" | cut -d"," -f2 | tr -d '\n'
 }
+
+function F3 () {
+    "$@" | cut -d"," -f3 | tr -d '\n'
+}
+
+function F4 () {
+    "$@" | cut -d"," -f4 | tr -d '\n'
+}
+
+function F5 () {
+    "$@" | cut -d"," -f5 | tr -d '\n'
+}
+
+bsr_exes=\
+"
+kk-bsr-spmv-cusparse-fp64-fp64 \
+kk-bsr-spmv-native-fp16-fp16 \
+kk-bsr-spmv-native-fp64-fp64 \
+kk-bsr-spmv-tc-fp16-fp16 \
+kk-bsr-spmv-tc-fp64-fp64 \
+"
 
 crs_exes=\
 "
@@ -54,22 +74,22 @@ kk-hybrid-spmv-tc-native-fp16-fp16 \
 kk-hybrid-spmv-tc-native-fp64-fp64 \
 "
 
-
-# don't match fade 1.0 (full blocks)
-# don't match fill (full blocks)
-mats=\
+# any matrix with the same block structure should be the same
+# don't need faded with fill because it's the same as non-fade
+block_mats=\
 "
-$STATIC/block-constant_528244_*_!(1.0)_0.0_*_bs16.mtx \
+$STATIC/block-constant_524288_*_1.0_*_0_bs16.mtx \
+$STATIC/block-diagonal-constant_524288_1.0_0_0_bs16.mtx \
+$STATIC/block-diagonal-variable_524288_*_1.0_*_0_pad16_fill16.mtx \
+$STATIC/block-variable_524288_*_*_1.0_*_0_pad16_fill16.mtx \
 "
 
 date
 
 echo -n "mat"
-
-# column headers for matrix statistics
-echo -n ",nnz,dense nnz (real),dense nnz (fill),sparse nnz"
-
-# column header for each method
+for exe in $bsr_exes; do
+    echo -n ","$exe
+done
 for exe in $crs_exes; do
     echo -n ","$exe
 done
@@ -78,22 +98,19 @@ for exe in $hybrid_exes; do
 done
 echo ""
 
-for mat in $mats; do
-    # print matrix name
+for mat in $block_mats; do
     echo -n `basename $mat`
-
-    # print matrix statistics
-    echo -n ","
-    F2-5 JSRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.5 $mat
-
-    # print performance 
+    for exe in $bsr_exes; do
+        echo -n ","
+        SRUN $ROOT/$METHOD/build/$exe 16 $mat
+    done
     for exe in $crs_exes; do
         echo -n ","
-        JSRUN $ROOT/$METHOD/build/$exe $mat
+        SRUN $ROOT/$METHOD/build/$exe $mat
     done
     for exe in $hybrid_exes; do
         echo -n ","
-        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.5 $mat
+        F1 SRUN $ROOT/$METHOD/build/$exe 16 0.5 $mat
     done
     echo ""
 done

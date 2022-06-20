@@ -48,6 +48,8 @@ kk-crs-spmv-native-fp64-fp64 \
 
 hybrid_exes=\
 "
+kk-hybrid-spmv-cusparse-cusparse-fp16-fp16 \
+kk-hybrid-spmv-cusparse-cusparse-fp64-fp64 \
 kk-hybrid-spmv-tc-cusparse-fp16-fp16 \
 kk-hybrid-spmv-tc-cusparse-fp64-fp64 \
 kk-hybrid-spmv-tc-native-fp16-fp16 \
@@ -59,7 +61,7 @@ kk-hybrid-spmv-tc-native-fp64-fp64 \
 # don't match fill (full blocks)
 mats=\
 "
-$STATIC/block-constant_131072_*_!(1.0)_0.0_*_bs16.mtx \
+$STATIC/block-constant_131072_*_!(1.0)_0_*_bs16.mtx \
 "
 
 date

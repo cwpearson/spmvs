@@ -2,7 +2,7 @@
 #SBATCH -A m3918_g
 #SBATCH -C gpu
 #SBATCH -q regular
-#SBATCH -t 4:00:00
+#SBATCH -t 2:00:00
 #SBATCH -n 1
 #SBATCH --ntasks-per-node=1
 #SBATCH -c 128

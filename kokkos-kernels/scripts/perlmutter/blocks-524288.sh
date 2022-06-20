@@ -78,10 +78,10 @@ kk-hybrid-spmv-tc-native-fp64-fp64 \
 # don't need faded with fill because it's the same as non-fade
 block_mats=\
 "
-$STATIC/block-constant_528244_*_1.0_*_0_bs16.mtx \
-$STATIC/block-diagonal-constant_528244_1.0_0_0_bs16.mtx \
-$STATIC/block-diagonal-variable_528244_*_1.0_*_0_pad16_fill16.mtx \
-$STATIC/block-variable_528244_*_*_1.0_*_0_pad16_fill16.mtx \
+$STATIC/block-constant_524288_*_1.0_*_0_bs16.mtx \
+$STATIC/block-diagonal-constant_524288_1.0_0_0_bs16.mtx \
+$STATIC/block-diagonal-variable_524288_*_1.0_*_0_pad16_fill16.mtx \
+$STATIC/block-variable_524288_*_*_1.0_*_0_pad16_fill16.mtx \
 "
 
 date

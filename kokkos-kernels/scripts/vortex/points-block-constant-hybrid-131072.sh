@@ -2,7 +2,7 @@
 #BSUB -J points-block-constant-hybrid-131072
 #BSUB -o points-block-constant-hybrid-131072.o%J
 #BSUB -e points-block-constant-hybrid-131072.e%J
-#BSUB -W 04:00
+#BSUB -W 08:00
 #BSUB -nnodes 1
 
 export ROOT=$HOME/repos/spmvs
@@ -61,30 +61,7 @@ kk-hybrid-spmv-tc-native-fp64-fp64 \
 
 mats=\
 "
-$ROOT/static/block-constant-hybrid_131072_0.00078125_0.5_0.1_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131072_0.00078125_0.5_0.5_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131072_0.00078125_0.5_1.0_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131072_0.00078125_0.5_2.0_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131072_0.00078125_0.7_0.1_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131072_0.00078125_0.7_0.5_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131072_0.00078125_0.7_1.0_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131072_0.00078125_0.7_2.0_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131072_0.00078125_1.0_0.1_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131072_0.00078125_1.0_0.5_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131072_0.00078125_1.0_1.0_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131072_0.00078125_1.0_2.0_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_0.5_0.1_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_0.5_0.5_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_0.5_1.0_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_0.5_2.0_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_0.7_0.1_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_0.7_0.5_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_0.7_1.0_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_0.7_2.0_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_1.0_0.1_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_1.0_0.5_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_1.0_1.0_0_bs16.mtx
-$ROOT/static/block-constant-hybrid_131344_0.0007796663028223921_1.0_2.0_0_bs16.mtx
+$ROOT/static/block-constant-hybrid_131072_*_*_!(0.0)_0_bs16.mtx
 "
 
 date
@@ -109,7 +86,7 @@ for mat in $mats; do
 
     # print matrix statistics
     echo -n ","
-    F2-5 JSRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.5 $mat
+    F2-5 JSRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.3 $mat
 
     # print performance 
     for exe in $crs_exes; do
@@ -118,7 +95,7 @@ for mat in $mats; do
     done
     for exe in $hybrid_exes; do
         echo -n ","
-        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.5 $mat
+        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.3 $mat
     done
     echo ""
 done

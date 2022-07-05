@@ -318,4 +318,3 @@ SplitResult<CrsMatrix> split_matrix(CrsMatrix m, int blockSize, float density) {
 
   return result;
 }
-

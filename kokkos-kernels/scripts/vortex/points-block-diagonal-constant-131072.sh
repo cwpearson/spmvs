@@ -49,6 +49,8 @@ kk-crs-spmv-native-fp64-fp64 \
 
 hybrid_exes=\
 "
+kk-hybrid-spmv-cusparse-cusparse-fp16-fp16 \
+kk-hybrid-spmv-cusparse-cusparse-fp64-fp64 \
 kk-hybrid-spmv-tc-cusparse-fp16-fp16 \
 kk-hybrid-spmv-tc-cusparse-fp64-fp64 \
 kk-hybrid-spmv-tc-native-fp16-fp16 \
@@ -60,7 +62,6 @@ kk-hybrid-spmv-tc-native-fp64-fp64 \
 mats=\
 "
 $ROOT/static/block-diagonal-constant_131072_!(1.0)_0_*_bs16.mtx \
-$ROOT/static/block-diagonal-constant_131072_!(1.0)_1000_*_bs16.mtx \
 "
 
 date
@@ -94,7 +95,7 @@ for mat in $mats; do
     done
     for exe in $hybrid_exes; do
         echo -n ","
-        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.5 $mat
+        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.3 $mat
     done
     echo ""
 done

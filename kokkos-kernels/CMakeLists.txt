@@ -40,6 +40,11 @@ target_link_with_kokkos(kk-crs-spmv-native-fp16-fp16)
 add_executable(kk-crs-spmv-native-fp64-fp64 kk_crs_spmv_native_fp64_fp64.cpp)
 target_link_with_kokkos(kk-crs-spmv-native-fp64-fp64)
 
+
+add_executable(kk-dense-cusparse-fp64 kk_dense_cusparse_fp64.cpp)
+target_link_with_kokkos(kk-dense-cusparse-fp64)
+
+
 add_executable(kk-hybrid-spmv-cusparse-cusparse-fp16-fp16 kk_hybrid_spmv_cusparse_cusparse_fp16_fp16.cpp)
 target_link_with_kokkos(kk-hybrid-spmv-cusparse-cusparse-fp16-fp16)
 
@@ -57,3 +62,6 @@ target_link_with_kokkos(kk-hybrid-spmv-tc-native-fp16-fp16)
 
 add_executable(kk-hybrid-spmv-tc-native-fp64-fp64 kk_hybrid_spmv_tc_native_fp64_fp64.cpp)
 target_link_with_kokkos(kk-hybrid-spmv-tc-native-fp64-fp64)
+
+add_executable(kk-sparse-cusparse-fp64 kk_sparse_cusparse_fp64.cpp)
+target_link_with_kokkos(kk-sparse-cusparse-fp64)

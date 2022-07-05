@@ -68,6 +68,8 @@ kk-crs-spmv-native-fp64-fp64 \
 
 hybrid_exes=\
 "
+kk-hybrid-spmv-cusparse-cusparse-fp16-fp16 \
+kk-hybrid-spmv-cusparse-cusparse-fp64-fp64 \
 kk-hybrid-spmv-tc-cusparse-fp16-fp16 \
 kk-hybrid-spmv-tc-cusparse-fp64-fp64 \
 kk-hybrid-spmv-tc-native-fp16-fp16 \
@@ -79,6 +81,7 @@ kk-hybrid-spmv-tc-native-fp64-fp64 \
 block_mats=\
 "
 $ROOT/static/block-constant_131072_*_1.0_*_0_bs16.mtx \
+$ROOT/static/block-constant-hybrid_131072_*_*_0.0_0_bs16.mtx \
 $ROOT/static/block-diagonal-constant_131072_1.0_0_0_bs16.mtx \
 $ROOT/static/block-diagonal-variable_131072_*_1.0_*_0_pad16_fill16.mtx \
 $ROOT/static/block-variable_131072_*_*_1.0_*_0_pad16_fill16.mtx \
@@ -86,7 +89,7 @@ $ROOT/static/block-variable_131072_*_*_1.0_*_0_pad16_fill16.mtx \
 
 date
 
-echo -n "mat"
+echo -n "mat,nnz"
 for exe in $bsr_exes; do
     echo -n ","$exe
 done
@@ -100,6 +103,11 @@ echo ""
 
 for mat in $block_mats; do
     echo -n `basename $mat`
+
+    # print matrix nnz
+    echo -n ","
+    F2 JSRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.3 $mat
+
     for exe in $bsr_exes; do
         echo -n ","
         JSRUN $ROOT/$METHOD/build/$exe 16 $mat
@@ -110,7 +118,7 @@ for mat in $block_mats; do
     done
     for exe in $hybrid_exes; do
         echo -n ","
-        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.5 $mat
+        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.3 $mat
     done
     echo ""
 done

@@ -49,6 +49,8 @@ kk-crs-spmv-native-fp64-fp64 \
 
 hybrid_exes=\
 "
+kk-hybrid-spmv-cusparse-cusparse-fp16-fp16 \
+kk-hybrid-spmv-cusparse-cusparse-fp64-fp64 \
 kk-hybrid-spmv-tc-cusparse-fp16-fp16 \
 kk-hybrid-spmv-tc-cusparse-fp64-fp64 \
 kk-hybrid-spmv-tc-native-fp16-fp16 \
@@ -94,7 +96,7 @@ for mat in $mats; do
     done
     for exe in $hybrid_exes; do
         echo -n ","
-        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.5 $mat
+        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.3 $mat
     done
     echo ""
 done

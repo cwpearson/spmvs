@@ -4,8 +4,6 @@
 #BSUB -e blocks-524288.e%J
 #BSUB -W 04:00
 #BSUB -nnodes 1
-#BSUB -x
-##BSUB -j_exclusive=yes
 
 export ROOT=$HOME/repos/spmvs
 export METHOD=kokkos-kernels
@@ -28,9 +26,8 @@ export CUDA_LAUNCH_BLOCKING=0
 block_mats=\
 "
 $ROOT/static/block-constant_524288_*_1.0_*_0_bs16.mtx \
+$ROOT/static/block-constant-hybrid_524288_*_*_0.0_0_bs16.mtx \
 $ROOT/static/block-diagonal-constant_524288_1.0_0_0_bs16.mtx \
-$ROOT/static/block-diagonal-variable_524288_*_1.0_*_0_pad16_fill16.mtx \
-$ROOT/static/block-variable_524288_*_*_1.0_*_0_pad16_fill16.mtx \
 "
 
 date
@@ -49,6 +46,12 @@ echo ""
 
 for mat in $block_mats; do
     echo -n `basename $mat`
+
+    # print matrix nnz
+    echo -n ","
+    F4 JSRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.3 $mat
+
+
     for exe in $bsr_exes; do
         echo -n ","
         JSRUN $ROOT/$METHOD/build/$exe 16 $mat
@@ -57,9 +60,10 @@ for mat in $block_mats; do
         echo -n ","
         JSRUN $ROOT/$METHOD/build/$exe $mat
     done
+    # Times: hybrid, remainder, dense
     for exe in $hybrid_exes; do
         echo -n ","
-        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.5 $mat
+        F1-3 JSRUN $ROOT/$METHOD/build/$exe 16 0.3 $mat
     done
     echo ""
 done

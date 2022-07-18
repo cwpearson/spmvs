@@ -91,10 +91,16 @@ int main(int argc, char **argv) {
       KokkosSparse::spmv(denseCtls, KokkosSparse::NoTranspose, alpha, dense, x, YScalar(1), y);
     }
     Kokkos::fence();
-    Duration elapsed = Clock::now() - start;
+    Duration hybridElapsed = Clock::now() - start;
+
+    // individual SpMVs
+    remMicros = bench_single(niters, nwarmup, remCtls, KokkosSparse::NoTranspose, alpha, remainder, x_sp, beta, y_sp);
+    denseMicros = bench_single(niters, nwarmup, denseCtls, KokkosSparse::NoTranspose, alpha, dense, x, YScalar(1), y);
 
     // clang-format off
-    std::cout << elapsed.count() / niters * 1e6 
+    std::cout << hybridElapsed.count() / niters * 1e6 
+    << "," << remMicros
+    << "," << denseMicros
     << "," << a.nnz() 
     << "," << split.denseNnz 
     << "," << dense.nnz() * dense.blockDim() * dense.blockDim() 

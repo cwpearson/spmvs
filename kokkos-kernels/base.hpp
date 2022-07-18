@@ -40,5 +40,5 @@ double bench_single(const int nIters, const int nWarmup,
   }
   Kokkos::fence();
   Duration elapsed = Clock::now() - start;
-  return elapsed.count() / nIters;
+  return elapsed.count() / nIters * 1e6;
 }

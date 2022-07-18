@@ -57,7 +57,7 @@ for mat in $mats; do
     done
     for exe in $hybrid_exes; do
         echo -n ","
-        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.5 $mat
+        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.3 $mat
     done
     echo ""
 done

@@ -19,7 +19,19 @@ function F2 () {
     "$@" | cut -d"," -f2 | tr -d '\n'
 }
 
-function F2-5 () {
+function F3 () {
+    "$@" | cut -d"," -f3 | tr -d '\n'
+}
+
+function F4 () {
+    "$@" | cut -d"," -f4 | tr -d '\n'
+}
+
+function F1-3 () {
+    "$@" | cut -d"," --fields=1,2,3 | tr -d '\n'
+}
+
+function F4-7 () {
     "$@" | cut -d"," --fields=2,3,4,5 | tr -d '\n'
 }
 

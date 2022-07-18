@@ -26,8 +26,6 @@ block_mats=\
 $ROOT/static/block-constant_131072_*_1.0_*_0_bs16.mtx \
 $ROOT/static/block-constant-hybrid_131072_*_*_0.0_0_bs16.mtx \
 $ROOT/static/block-diagonal-constant_131072_1.0_0_0_bs16.mtx \
-$ROOT/static/block-diagonal-variable_131072_*_1.0_*_0_pad16_fill16.mtx \
-$ROOT/static/block-variable_131072_*_*_1.0_*_0_pad16_fill16.mtx \
 "
 
 date
@@ -49,7 +47,7 @@ for mat in $block_mats; do
 
     # print matrix nnz
     echo -n ","
-    F2 JSRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.3 $mat
+    F4 JSRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.3 $mat
 
     for exe in $bsr_exes; do
         echo -n ","
@@ -59,9 +57,10 @@ for mat in $block_mats; do
         echo -n ","
         JSRUN $ROOT/$METHOD/build/$exe $mat
     done
+    # Times: hybrid, remainder, dense
     for exe in $hybrid_exes; do
         echo -n ","
-        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.3 $mat
+        F1-3 JSRUN $ROOT/$METHOD/build/$exe 16 0.3 $mat
     done
     echo ""
 done

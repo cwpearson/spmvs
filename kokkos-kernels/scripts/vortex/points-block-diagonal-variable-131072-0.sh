@@ -41,7 +41,9 @@ for exe in $crs_exes; do
     echo -n ","$exe
 done
 for exe in $hybrid_exes; do
-    echo -n ","$exe
+    echo -n ",hybrid-"$exe
+    echo -n ",rem-"$exe
+    echo -n ",dense-"$exe
 done
 echo ""
 
@@ -51,7 +53,7 @@ for mat in $mats; do
 
     # print matrix statistics
     echo -n ","
-    F2-5 JSRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.3 $mat
+    F4-7 JSRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.3 $mat
 
     # print performance 
     for exe in $crs_exes; do
@@ -60,7 +62,7 @@ for mat in $mats; do
     done
     for exe in $hybrid_exes; do
         echo -n ","
-        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.3 $mat
+        F1-3 JSRUN $ROOT/$METHOD/build/$exe 16 0.3 $mat
     done
     echo ""
 done

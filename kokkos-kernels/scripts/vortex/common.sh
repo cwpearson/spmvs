@@ -4,8 +4,8 @@ jsrun \
 -n 1 \
 -r 1 \
 -a 1 \
--g 1 \
--c 2 \
+-g 4 \
+-c 32 \
 -b rs \
 -l gpu-cpu \
 "$@"
@@ -15,9 +15,22 @@ function F1 () {
     "$@" | cut -d"," -f1 | tr -d '\n'
 }
 
+function F2 () {
+    "$@" | cut -d"," -f2 | tr -d '\n'
+}
+
 function F2-5 () {
     "$@" | cut -d"," --fields=2,3,4,5 | tr -d '\n'
 }
+
+bsr_exes=\
+"
+kk-bsr-spmv-cusparse-fp64-fp64 \
+kk-bsr-spmv-native-fp16-fp16 \
+kk-bsr-spmv-native-fp64-fp64 \
+kk-bsr-spmv-tc-fp16-fp16 \
+kk-bsr-spmv-tc-fp64-fp64 \
+"
 
 crs_exes=\
 "

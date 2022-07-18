@@ -4,6 +4,8 @@
 #BSUB -e points-block-constant-524288.e%J
 #BSUB -W 00:30
 #BSUB -nnodes 1
+#BSUB -x
+##BSUB -j_exclusive=yes
 
 export ROOT=$HOME/repos/spmvs
 export METHOD=kokkos-kernels

@@ -2,7 +2,7 @@
 #BSUB -J points-block-diagonal-variable-524288-0
 #BSUB -o points-block-diagonal-variable-524288-0.o%J
 #BSUB -e points-block-diagonal-variable-524288-0.e%J
-#BSUB -W 01:00
+#BSUB -W 02:00
 #BSUB -nnodes 1
 
 export ROOT=$HOME/repos/spmvs
@@ -18,42 +18,7 @@ shopt -s extglob
 export KOKKOS_NUM_DEVICES=1
 export CUDA_LAUNCH_BLOCKING=0
 
-function JSRUN () {
-jsrun \
---smpiargs="-disable_gpu_hooks" \
--n 1 \
--r 1 \
--a 1 \
--g 1 \
--c 2 \
--b rs \
--l gpu-cpu \
-"$@"
-}
-
-function F1 () {
-    "$@" | cut -d"," -f1 | tr -d '\n'
-}
-
-function F2-5 () {
-    "$@" | cut -d"," --fields=2,3,4,5 | tr -d '\n'
-}
-
-crs_exes=\
-"
-kk-crs-spmv-cusparse-fp16-fp16 \
-kk-crs-spmv-cusparse-fp64-fp64 \
-kk-crs-spmv-native-fp16-fp16 \
-kk-crs-spmv-native-fp64-fp64 \
-"
-
-hybrid_exes=\
-"
-kk-hybrid-spmv-tc-cusparse-fp16-fp16 \
-kk-hybrid-spmv-tc-cusparse-fp64-fp64 \
-kk-hybrid-spmv-tc-native-fp16-fp16 \
-kk-hybrid-spmv-tc-native-fp64-fp64 \
-"
+. $ROOT/$METHOD/scripts/vortex/common.sh
 
 # dont match fill (full blocks)
 # separate out sprinkes since performance is quite different
@@ -61,6 +26,7 @@ mats=\
 "
 $ROOT/static/block-diagonal-variable_524288_*_*_0_0.mtx \
 $ROOT/static/block-diagonal-variable_524288_*_*_0_0_pad16.mtx \
+$ROOT/static/block-diagonal-variable_524288_*_*_0_0.mtx_v-cycle.mtx \
 "
 
 date

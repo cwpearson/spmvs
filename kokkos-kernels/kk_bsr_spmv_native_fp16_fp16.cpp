@@ -48,10 +48,10 @@ int main(int argc, char **argv) {
     const int nwarmup = 5;
     KokkosKernels::Experimental::Controls controls;
     controls.setParameter("algorithm", "native");
-    double secsPerSpmv =
+    double microsPerSpmv =
         bench_single(niters, nwarmup, controls, KokkosSparse::NoTranspose, alpha, a, x, beta, y);
 
-    std::cout << secsPerSpmv * 1e6;
+    std::cout << microsPerSpmv;
     std::cout << std::flush;
   }
   Kokkos::finalize();

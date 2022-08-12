@@ -94,8 +94,8 @@ int main(int argc, char **argv) {
     Duration hybridElapsed = Clock::now() - start;
 
     // individual SpMVs
-    remMicros = bench_single(niters, nwarmup, remCtls, KokkosSparse::NoTranspose, alpha, remainder, x_sp, beta, y_sp);
-    denseMicros = bench_single(niters, nwarmup, denseCtls, KokkosSparse::NoTranspose, alpha, dense, x, YScalar(1), y);
+    double remMicros = bench_single(niters, nwarmup, remCtls, KokkosSparse::NoTranspose, alpha, remainder, x_sp, beta, y_sp);
+    double denseMicros = bench_single(niters, nwarmup, denseCtls, KokkosSparse::NoTranspose, alpha, dense, x, YScalar(1), y);
 
     // clang-format off
     std::cout << hybridElapsed.count() / niters * 1e6 

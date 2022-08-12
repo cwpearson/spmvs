@@ -53,7 +53,7 @@ for mat in $mats; do
 
     # print matrix statistics
     echo -n ","
-    F4-7 JSRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.5 $mat
+    F4-7 JSRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.3 $mat
 
     # print performance 
     for exe in $crs_exes; do

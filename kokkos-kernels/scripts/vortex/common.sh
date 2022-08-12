@@ -32,7 +32,7 @@ function F1-3 () {
 }
 
 function F4-7 () {
-    "$@" | cut -d"," --fields=2,3,4,5 | tr -d '\n'
+    "$@" | cut -d"," --fields=4,5,6,7 | tr -d '\n'
 }
 
 bsr_exes=\

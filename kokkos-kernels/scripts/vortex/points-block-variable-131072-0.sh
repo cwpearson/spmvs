@@ -2,7 +2,7 @@
 #BSUB -J points-block-variable-131072-0
 #BSUB -o points-block-variable-131072-0.o%J
 #BSUB -e points-block-variable-131072-0.e%J
-#BSUB -W 03:00
+#BSUB -W 08:00
 #BSUB -nnodes 1
 
 export ROOT=$HOME/repos/spmvs
@@ -24,6 +24,7 @@ mats=\
 "
 $ROOT/static/block-variable_131072_*_*_*_0_0.mtx \
 $ROOT/static/block-variable_131072_*_*_*_0_0_pad16.mtx \
+$ROOT/static/block-variable_131072_*_*_*_0_0.mtx_v-cycle.mtx \
 "
 
 date
@@ -38,7 +39,9 @@ for exe in $crs_exes; do
     echo -n ","$exe
 done
 for exe in $hybrid_exes; do
-    echo -n ","$exe
+    echo -n ",hybrid-"$exe
+    echo -n ",rem-"$exe
+    echo -n ",dense-"$exe
 done
 echo ""
 
@@ -48,7 +51,7 @@ for mat in $mats; do
 
     # print matrix statistics
     echo -n ","
-    F2-5 JSRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.3 $mat
+    F4-7 JSRUN $ROOT/$METHOD/build/kk-hybrid-spmv-tc-cusparse-fp16-fp16 16 0.3 $mat
 
     # print performance 
     for exe in $crs_exes; do
@@ -57,7 +60,7 @@ for mat in $mats; do
     done
     for exe in $hybrid_exes; do
         echo -n ","
-        F1 JSRUN $ROOT/$METHOD/build/$exe 16 0.3 $mat
+        F1-3 JSRUN $ROOT/$METHOD/build/$exe 16 0.3 $mat
     done
     echo ""
 done
